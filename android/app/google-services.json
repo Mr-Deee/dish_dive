@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "747258885865",
+    "project_id": "dishdive-c19d5",
+    "storage_bucket": "dishdive-c19d5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:747258885865:android:ecc5925a732bda5067a278",
+        "android_client_info": {
+          "package_name": "com.example.dish_dive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "747258885865-u2kutrv4b110rl75trdfkkra3j3ihjpu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATAnxga-641AehWftsZ2v85Scwe5zYU8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "747258885865-u2kutrv4b110rl75trdfkkra3j3ihjpu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
