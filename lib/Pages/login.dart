@@ -63,7 +63,8 @@ class LoginPage extends StatelessWidget {
                   ),
 
                   SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                  const Text("Log in",
+                   Text("Discover Africa"
+                      "One Dish At A Time",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 40,
