@@ -1,3 +1,4 @@
+import 'package:dish_dive/components/Users.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,9 +8,6 @@ import 'Pages/SignUp.dart';
 import 'Pages/Welcomepage.dart';
 import 'Pages/homepage.dart';
 import 'Pages/login.dart';
-import 'components/Users.dart';
-
-import 'components/Users.dart';
 import 'firebase_options.dart';
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +16,7 @@ void main()async {
   );
   runApp(const MyApp());
 }
-DatabaseReference Users = FirebaseDatabase.instance.ref().child("Users");
+DatabaseReference NewUsers = FirebaseDatabase.instance.ref().child("Users");
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

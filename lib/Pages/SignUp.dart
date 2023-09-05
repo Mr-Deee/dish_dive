@@ -229,7 +229,7 @@ class Signup extends StatelessWidget {
         // "Dob":birthDate,
         // "Gender":Gender,
       };
-      Users.child(firebaseUser!.uid).set(userDataMap);
+      NewUsers.child(firebaseUser!.uid).set(userDataMap);
       // Admin.child(firebaseUser!.uid).set(userDataMap);
 
       currentfirebaseUser = firebaseUser;

@@ -12,6 +12,7 @@ import '../Recipe.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../components/custom_bottom_bar.dart';
+import 'RecipeDetails.dart';
 
 
 class homepage extends StatefulWidget {
@@ -40,7 +41,7 @@ class _homepageState extends State<homepage>  with TickerProviderStateMixin<home
   void initState() {
     super.initState();
     // tabController = TabController(length: 5, vsync: this);
-    bottomTabController = TabController(length:3 , vsync: this);
+    bottomTabController = TabController(length:2 , vsync: this);
     // AssistantMethods.getCurrentOnlineUserInfo(context);
   }
   int currentIndex = 0;
@@ -125,63 +126,70 @@ class _homepageState extends State<homepage>  with TickerProviderStateMixin<home
             child: Column(
               children: [
                 SizedBox(height: 39,),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: IconButton(
-                    onPressed: () {
-                      showDialog<void>(
-                        context: context,
-                        barrierDismissible: false,
-                        // user must tap button!
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Sign Out'),
-                            backgroundColor: Colors.white,
-                            content: SingleChildScrollView(
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                      'Are you certain you want to Sign Out?'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("Dish Dive",style: TextStyle(fontSize: 29,fontWeight: FontWeight.bold),),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: IconButton(
+                        onPressed: () {
+                          showDialog<void>(
+                            context: context,
+                            barrierDismissible: false,
+                            // user must tap button!
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Sign Out'),
+                                backgroundColor: Colors.white,
+                                content: SingleChildScrollView(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text(
+                                          'Are you certain you want to Sign Out?'),
+                                    ],
+                                  ),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text(
+                                      'Yes',
+                                      style:
+                                      TextStyle(color: Colors.black),
+                                    ),
+                                    onPressed: () {
+                                      print('yes');
+                                      FirebaseAuth.instance.signOut();
+                                      Navigator.pushNamedAndRemoveUntil(
+                                          context,
+                                          "/SignIn",
+                                              (route) => false);
+                                      // Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: Text(
+                                      'Cancel',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
                                 ],
-                              ),
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                child: Text(
-                                  'Yes',
-                                  style:
-                                  TextStyle(color: Colors.black),
-                                ),
-                                onPressed: () {
-                                  print('yes');
-                                  FirebaseAuth.instance.signOut();
-                                  Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      "/SignIn",
-                                          (route) => false);
-                                  // Navigator.of(context).pop();
-                                },
-                              ),
-                              TextButton(
-                                child: Text(
-                                  'Cancel',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.logout,
-                      color: Colors.black,
+                        icon: const Icon(
+                          Icons.logout,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -566,9 +574,9 @@ class _homepageState extends State<homepage>  with TickerProviderStateMixin<home
 
                   ],
                 ),
-                SizedBox(height: 30,),
+                SizedBox(height: 10,),
 
-                Text("Recipes"),
+                Text("Recipes",style: TextStyle(fontSize: 29,fontWeight: FontWeight.bold)),
                 Center(
 
 
@@ -598,16 +606,98 @@ class _homepageState extends State<homepage>  with TickerProviderStateMixin<home
                               itemCount: recipes.length,
                               itemBuilder: (context, index) {
                                 final recipe = recipes[index];
-                                return ListTile(
-                                  leading: Image.network(recipe.imageUrl??""),
-                                  title: Text(recipe.title),
-                                  subtitle: Text(recipe.instructions),
-                                  onTap: (){
-                                    speakRecipe(recipe);
-                                    // speakRecipe(recipe);
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => RecipeDetailsPage(
+                                          imageUrl: recipe.imageUrl??"",
+                                          title: recipe.title,
+                                          ingredients: recipe.ingredients,
+                                          instructions: recipe.instructions,
+                                        ),
+                                      ),
+                                    );
                                   },
-                                  // Display recipe details and image here
+
+                                  child: Card(
+                                      elevation: 3,
+                                      margin: EdgeInsets.all(10),
+                                  child: Column(
+                                  children: [
+                                  Image.network(recipe.imageUrl??""),
+                                  ButtonBar(
+                                  alignment: MainAxisAlignment.center,
+                                  children: [
+                                  IconButton(
+                                  icon: Icon(Icons.thumb_up),
+                                  onPressed: () {
+                                  // Handle like button tap
+                                  },
+                                  ),
+                                  IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                  // Handle share button tap
+                                    // Delete the document from Firestore
+                                    FirebaseFirestore.instance
+                                        .collection('recipes')
+                                        .doc(recipe.id)
+                                        .delete()
+                                        .then((_) {
+                                      // Close the dialog
+                                      // Navigator.of(context).pop();
+                                    }).catchError((error) {
+                                      // Handle the deletion error, if any
+                                      print("Error deleting recipe: $error");
+                                    });
+                                  },
+                                  ),
+                                  ],
+                                  )])),
                                 );
+
+
+
+                                //   ListTile(
+                                //   leading: Padding(
+                                //     padding: const EdgeInsets.all(8.0),
+                                //     child: Container(
+                                //      padding: const EdgeInsets.only(
+                                //       top: 0,
+                                //       left: 10,
+                                //       right: 15,
+                                //     ),
+                                //       width: 150,
+                                //       height: 160,
+                                //       decoration: BoxDecoration(
+                                //         color: Colors.black,
+                                //         borderRadius: BorderRadius.only(
+                                //           topLeft: Radius.circular(46),
+                                //           topRight: Radius.circular(16),
+                                //           bottomLeft: Radius.circular(16),
+                                //           bottomRight: Radius.circular(16),
+                                //         ),
+                                //         boxShadow: [
+                                //           BoxShadow(
+                                //             offset: Offset(0, 5),
+                                //             blurRadius: 6,
+                                //             color: Color(0xff000000).withOpacity(0.16),
+                                //           ),
+                                //         ],
+                                //       ),
+                                //
+                                //         child: Image.network(recipe.imageUrl??"")),
+                                //   ),
+                                //   // title: Text(recipe.title),
+                                //   // subtitle: Text(recipe.instructions),
+                                //   onTap: (){
+                                //     speakRecipe(recipe);
+                                //     // speakRecipe(recipe);
+                                //   },
+                                //   // Display recipe details and image here
+                                // );
 
                               },
                             ),
@@ -621,16 +711,17 @@ class _homepageState extends State<homepage>  with TickerProviderStateMixin<home
             ),
           ),
 
+
             Profilepage(),
         ]),
-        floatingActionButton:FloatingActionButton( //
-          backgroundColor: Colors.black,
-          // Floating action button on Scaffold
-          splashColor:  Colors.cyan,
-          onPressed: () => _onItemTapped(3),
-
-          child: Icon(Icons.home), //icon inside button
-        ),
+        // floatingActionButton:FloatingActionButton( //
+        //   backgroundColor: Colors.black,
+        //   // Floating action button on Scaffold
+        //   splashColor:  Colors.cyan,
+        //   onPressed: () => _onItemTapped(0),
+        //
+        //   child: Icon(Icons.home,color: Colors.white,), //icon inside button
+        // ),
 
         bottomNavigationBar: CustomBottomBar(controller: bottomTabController!)
 

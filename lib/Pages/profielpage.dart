@@ -35,7 +35,7 @@ class _ProfilepageState extends State<Profilepage> {
         firebaseUser!.uid; // ASSIGN UID FROM FIREBASE TO LOCAL STRING
     print('assistant methods step 5:: assign firebase uid to string');
     DatabaseReference reference =
-    FirebaseDatabase.instance.reference().child("Clients").child(userId);
+    FirebaseDatabase.instance.reference().child("Users").child(userId);
     print(
         'assistant methods step 6:: call users document from firebase database using userId');
     reference.once().then(( event) async {
@@ -78,18 +78,20 @@ class _ProfilepageState extends State<Profilepage> {
             // ),
             SizedBox(height: 16.0),
             Text(
-              _displayName,
+              Provider.of<Users>(context).userInfo!.username??"" ,
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 8.0),
-            Text(
-              _bio,
-              style: TextStyle(
-                fontSize: 16.0,
-                color: Colors.grey,
+            Center(
+              child: Text(
+                Provider.of<Users>(context).userInfo!.email! ,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.grey,
+                ),
               ),
             ),
           ],

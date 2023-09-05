@@ -23,8 +23,8 @@ class CustomBottomBar extends StatelessWidget {
 
           Padding(
             padding: const EdgeInsets.only(left:88.0),
-            child: IconButton(icon: Icon(Icons.fastfood_sharp, color: Colors.black,),  onPressed: () {
-              controller.animateTo(1);
+            child: IconButton(icon: Icon(Icons.home, color: Colors.black,),  onPressed: () {
+              controller.animateTo(0);
             }),
           ),
 
@@ -33,7 +33,7 @@ class CustomBottomBar extends StatelessWidget {
 
           Padding(
             padding: const EdgeInsets.only(right: 58.0),
-            child: IconButton(icon: Icon(Icons.person, color: Colors.black,), onPressed: () {  controller.animateTo(2);},),
+            child: IconButton(icon: Icon(Icons.person, color: Colors.black,), onPressed: () {  controller.animateTo(1);},),
           ),
 
         ],
